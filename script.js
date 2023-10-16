@@ -29,9 +29,9 @@ const promptFunc = async (input) => {
     // Instantiation of a new object called "prompt" using the "PromptTemplate" class
     const prompt = new PromptTemplate({
       template:
-        "You are a javascript expert and will answer the user’s coding questions thoroughly as possible.\n{question}",
-      // Input variables are defined here, it is an array of strings, so we can set multiple input variables
+        "You are a javascript expert and will answer the user’s coding questions thoroughly as possible.\n{format_instructions}\n{question}",
       inputVariables: ["question"],
+      partialVariables: { format_instructions: formatInstructions },
     });
 
     const promptInput = await prompt.format({
@@ -39,7 +39,7 @@ const promptFunc = async (input) => {
     });
 
     const res = await model.call(input);
-    console.log(res);
+    console.log(await parser.parse(res));
   } catch (err) {
     console.error(err);
   }
