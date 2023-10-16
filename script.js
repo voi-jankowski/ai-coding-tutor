@@ -17,6 +17,18 @@ console.log({ model });
 // Uses the instantiated OpenAI wrapper, model, and makes a call based on input from inquirer
 const promptFunc = async (input) => {
   try {
+    // Instantiation of a new object called "prompt" using the "PromptTemplate" class
+    const prompt = new PromptTemplate({
+      template:
+        "You are a javascript expert and will answer the user’s coding questions thoroughly as possible.\n{question}",
+      // Input variables are defined here, it is an array of strings, so we can set multiple input variables
+      inputVariables: ["question"],
+    });
+
+    const promptInput = await prompt.format({
+      question: input,
+    });
+
     const res = await model.call(input);
     console.log(res);
   } catch (err) {
@@ -38,14 +50,6 @@ const init = () => {
       promptFunc(inquirerResponse.name);
     });
 };
-
-// Instantiation of a new object called "prompt" using the "PromptTemplate" class
-const prompt = new PromptTemplate({
-  template:
-    "You are a javascript expert and will answer the user’s coding questions thoroughly as possible.\n{question}",
-  // Input variables are defined here, it is an array of strings, so we can set multiple input variables
-  inputVariables: ["question"],
-});
 
 // Calls the initialization function and starts the script
 init();
