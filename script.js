@@ -3,6 +3,8 @@ const { OpenAI } = require("langchain/llms/openai");
 const inquirer = require("inquirer");
 require("dotenv").config();
 
+const { PromptTemplate } = require("langchain/prompts");
+
 // Creates and stores a wrapper for the OpenAI package along with basic configuration
 const model = new OpenAI({
   openAIApiKey: process.env.OPENAI_API_KEY,
@@ -36,6 +38,14 @@ const init = () => {
       promptFunc(inquirerResponse.name);
     });
 };
+
+// Instantiation of a new object called "prompt" using the "PromptTemplate" class
+const prompt = new PromptTemplate({
+  template:
+    "You are a javascript expert and will answer the user’s coding questions thoroughly as possible.\n{question}",
+  // Input variables are defined here, it is an array of strings, so we can set multiple input variables
+  inputVariables: ["question"],
+});
 
 // Calls the initialization function and starts the script
 init();
