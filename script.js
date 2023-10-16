@@ -42,7 +42,7 @@ const promptFunc = async (input) => {
 
     console.log(await parser.parse(res));
   } catch (err) {
-    console.log("Raw Output:", res); // Print the raw output if it can't be parsed
+    console.log(err);
   }
 };
 
