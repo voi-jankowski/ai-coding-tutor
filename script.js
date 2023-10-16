@@ -13,7 +13,7 @@ const model = new OpenAI({
   model: "gpt-3.5-turbo",
 });
 
-console.log({ model });
+// console.log({ model });
 
 // With a `StructuredOutputParser` we can define a schema for the output.
 const parser = StructuredOutputParser.fromNamesAndDescriptions({
@@ -29,7 +29,7 @@ const promptFunc = async (input) => {
     // Instantiation of a new object called "prompt" using the "PromptTemplate" class
     const prompt = new PromptTemplate({
       template:
-        "You are a javascript expert and will answer the user’s coding questions thoroughly as possible.\n{format_instructions}\n{question}",
+        'You are a javascript expert. Please provide answers in a structured format with code and explanation. Format: { "code": "<Javascript code>", "explanation": "<detailed explanation>" }.\n{format_instructions}\n{question}',
       inputVariables: ["question"],
       partialVariables: { format_instructions: formatInstructions },
     });
@@ -39,9 +39,10 @@ const promptFunc = async (input) => {
     });
 
     const res = await model.call(input);
+
     console.log(await parser.parse(res));
   } catch (err) {
-    console.error(err);
+    console.log("Raw Output:", res); // Print the raw output if it can't be parsed
   }
 };
 
