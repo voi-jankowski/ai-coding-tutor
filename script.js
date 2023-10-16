@@ -4,6 +4,7 @@ const inquirer = require("inquirer");
 require("dotenv").config();
 
 const { PromptTemplate } = require("langchain/prompts");
+const { StructuredOutputParser } = require("langchain/output_parsers");
 
 // Creates and stores a wrapper for the OpenAI package along with basic configuration
 const model = new OpenAI({
@@ -13,6 +14,14 @@ const model = new OpenAI({
 });
 
 console.log({ model });
+
+// With a `StructuredOutputParser` we can define a schema for the output.
+const parser = StructuredOutputParser.fromNamesAndDescriptions({
+  code: "Javascript code that answers the user's question",
+  explanation: "detailed explanation of the example code provided",
+});
+
+const formatInstructions = parser.getFormatInstructions();
 
 // Uses the instantiated OpenAI wrapper, model, and makes a call based on input from inquirer
 const promptFunc = async (input) => {
